@@ -1,6 +1,6 @@
-package com.ardecs.ctshopapp.accessingdatamysql.repo;
+package com.ardecs.ctshop.javaPersistence.repository;
 
-import com.ardecs.ctshopapp.accessingdatamysql.Product;
+import com.ardecs.ctshop.javaPersistence.entity.Product;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface ProductRepo extends CrudRepository<Product, Integer> {
+public interface ProductRepository extends CrudRepository<Product, Integer> {
 
     Product findByName(String name);
 

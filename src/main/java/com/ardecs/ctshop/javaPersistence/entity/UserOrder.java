@@ -1,11 +1,12 @@
-package com.ardecs.ctshopapp.accessingdatamysql;
+package com.ardecs.ctshop.javaPersistence.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class U_order {
+@Table(name = "user_order")
+public class UserOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;

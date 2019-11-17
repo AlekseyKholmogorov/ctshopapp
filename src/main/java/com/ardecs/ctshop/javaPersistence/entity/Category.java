@@ -1,15 +1,16 @@
-package com.ardecs.ctshopapp.accessingdatamysql;
+package com.ardecs.ctshop.javaPersistence.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "category")
 public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name="id")
-    private Integer category_id;
+    private Integer id;
     private String name;
     @OneToMany(mappedBy = "category")
     private List<Product> products = new ArrayList<>();
@@ -21,12 +22,12 @@ public class Category {
         this.name = name;
     }
 
-    public Integer getCategory_id() {
-        return category_id;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCategory_id(Integer category_id) {
-        this.category_id = category_id;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -1,10 +1,11 @@
-package com.ardecs.ctshopapp.accessingdatamysql;
+package com.ardecs.ctshop.javaPersistence.entity;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Table(name = "user")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -19,14 +20,14 @@ public class User {
     private String email;
 
     @OneToMany(mappedBy = "user")
-    private List<U_order> u_orders = new ArrayList<>();
+    private List<UserOrder> orders = new ArrayList<>();
 
-    public List<U_order> getU_orders() {
-        return u_orders;
+    public List<UserOrder> getOrders() {
+        return orders;
     }
 
-    public void setU_orders(List<U_order> u_orders) {
-        this.u_orders = u_orders;
+    public void setOrders(List<UserOrder> orders) {
+        this.orders = orders;
     }
 
     public Integer getId() { return id; }
