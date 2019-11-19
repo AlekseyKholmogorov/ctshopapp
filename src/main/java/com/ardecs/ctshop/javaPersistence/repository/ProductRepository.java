@@ -1,5 +1,5 @@
 package com.ardecs.ctshop.javaPersistence.repository;
-
+import com.ardecs.ctshop.annotations.Loggable;
 import com.ardecs.ctshop.javaPersistence.entity.Product;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -12,6 +12,7 @@ public interface ProductRepository extends CrudRepository<Product, Integer> {
 
     Product findByName(String name);
 
+    @Loggable
     @Query("from Product p where quantity > 0 order by p.price")
     List<Product> findProductsByAvailabilityAndSortByPrice();
 

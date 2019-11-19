@@ -1,7 +1,9 @@
 package com.ardecs.ctshop;
 
+import com.ardecs.ctshop.annotations.Loggable;
 import com.ardecs.ctshop.javaPersistence.entity.Product;
 import com.ardecs.ctshop.javaPersistence.repository.ProductRepository;
+import com.ardecs.ctshop.service.MyService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,9 @@ public class ApplicationTests {
 
 
     @Autowired
+    private MyService myService;
+
+    @Autowired
     private ProductRepository productRepository;
 
     @Test
@@ -33,6 +38,16 @@ public class ApplicationTests {
     public void testFindProductsByAvailabilityAndSortByPrice() {
         List<Product> products = productRepository.findProductsByAvailabilityAndSortByPrice();
         products.forEach(p -> System.out.println("------" + p.getName().toUpperCase() + " " + p.getPrice() + "------"));
+    }
+
+    @Test
+    public void testLoggable() throws InterruptedException {
+        myService.addCategory("coffee");
+        myService.showCategories();
+        myService.addCategory("tea");
+        myService.showCategories();
+        myService.addCategory("accessories");
+        myService.showCategories();
     }
 }
 
