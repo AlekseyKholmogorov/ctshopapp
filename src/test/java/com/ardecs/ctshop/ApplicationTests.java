@@ -1,8 +1,7 @@
 package com.ardecs.ctshop;
 
-import com.ardecs.ctshop.annotations.Loggable;
-import com.ardecs.ctshop.javaPersistence.entity.Product;
-import com.ardecs.ctshop.javaPersistence.repository.ProductRepository;
+import com.ardecs.ctshop.persistence.entity.Product;
+import com.ardecs.ctshop.persistence.repository.ProductRepository;
 import com.ardecs.ctshop.service.MyService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,6 +37,13 @@ public class ApplicationTests {
     public void testFindProductsByAvailabilityAndSortByPrice() {
         List<Product> products = productRepository.findProductsByAvailabilityAndSortByPrice();
         products.forEach(p -> System.out.println("------" + p.getName().toUpperCase() + " " + p.getPrice() + "------"));
+    }
+
+    @Test
+    @Transactional
+    public void testFindProductsByCategoryCoffee() {
+        List<Product> products = productRepository.findProductsByCategoryCoffee();
+        products.forEach(p -> System.out.println("------" + p.getName().toUpperCase() + " " + p.getCategory() + "------"));
     }
 
     @Test

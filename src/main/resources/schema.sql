@@ -20,14 +20,13 @@ CREATE TABLE product (
 
 CREATE TABLE user (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-    login VARCHAR(20) NOT NULL UNIQUE,
+    name VARCHAR(20) NOT NULL UNIQUE,
     password VARCHAR(20) NOT NULL,
-    email VARCHAR(50) NOT NULL UNIQUE
     );
     
 CREATE TABLE user_order (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-    paid TINYINT(1) NOT NULL DEFAULT 0,
+    status TINYINT(1) NOT NULL DEFAULT 0,
     user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user (id)
     );    

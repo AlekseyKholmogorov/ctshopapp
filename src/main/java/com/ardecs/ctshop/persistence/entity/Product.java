@@ -1,14 +1,15 @@
-package com.ardecs.ctshop.javaPersistence.entity;
+package com.ardecs.ctshop.persistence.entity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "product")
 public class Product {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     private String name;
@@ -22,18 +23,19 @@ public class Product {
     private Category category;
 
     @ManyToMany(mappedBy = "products")
-    private List<UserOrder> userOrders = new ArrayList<>();
+    private Set<Order> orders = new HashSet<>();
 
     public Product() {
 
     }
 
-    public Product(String name, String region, String description, Double price, Integer quantity) {
+    public Product(String name, String region, String description, Double price, Integer quantity, Category category) {
         this.name = name;
         this.region = region;
         this.description = description;
         this.price = price;
         this.quantity = quantity;
+        this.category = category;
     }
 
     public Integer getId() {
@@ -92,12 +94,12 @@ public class Product {
         this.category = category;
     }
 
-    public List<UserOrder> getUserOrders() {
-        return userOrders;
+    public Set<Order> getOrders() {
+        return orders;
     }
 
-    public void setUserOrders(List<UserOrder> userOrders) {
-        this.userOrders = userOrders;
+    public void setOrders(Set<Order> orders) {
+        this.orders = orders;
     }
 
 }

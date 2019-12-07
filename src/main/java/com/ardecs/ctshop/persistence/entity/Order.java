@@ -1,26 +1,35 @@
-package com.ardecs.ctshop.javaPersistence.entity;
+package com.ardecs.ctshop.persistence.entity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "user_order")
-public class UserOrder {
+public class Order {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private boolean status;
     @ManyToOne
-    @JoinTable(name = "id")
+    @JoinColumn(name = "user_id")
     private User user;
 
     @ManyToMany
     @JoinTable(name = "order_product",
-            joinColumns        = @JoinColumn(name = "order_id"),
+            joinColumns = @JoinColumn(name = "order_id"),
             inverseJoinColumns = @JoinColumn(name = "product_id")
     )
-    private List<Product> products = new ArrayList<>();
+    private Set<Product> products = new HashSet<>();
+
+    public Order() {
+
+    }
+
+    public Order(boolean status, User user) {
+        this.status = status;
+        this.user = user;
+    }
 
     public Integer getId() {
         return id;
@@ -30,7 +39,7 @@ public class UserOrder {
         this.id = id;
     }
 
-    public boolean isStatus() {
+    public boolean getStatus() {
         return status;
     }
 
@@ -46,11 +55,11 @@ public class UserOrder {
         this.user = user;
     }
 
-    public List<Product> getProducts() {
+    public Set<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(Set<Product> products) {
         this.products = products;
     }
 }

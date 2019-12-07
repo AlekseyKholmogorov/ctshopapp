@@ -2,6 +2,10 @@ INSERT INTO category ( name) VALUES
     ('coffee'),
     ('tea'),
     ('accessories');
+
+INSERT INTO user (name, password) VALUES
+    ('john', '123');
+
 INSERT INTO product (name, region, description, price,quantity, category_id) VALUES
     ('assam', 'india', 'black tea from india', 21.95, 3, 2),
     ('lapsang souchong', 'china', 'black tea from china', 9.98, 0, 2),

@@ -1,19 +1,19 @@
-package com.ardecs.ctshop.javaPersistence.entity;
+package com.ardecs.ctshop.persistence.entity;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "category")
 public class Category {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Integer id;
     private String name;
     @OneToMany(mappedBy = "category")
-    private List<Product> products = new ArrayList<>();
+    private Set<Product> products = new HashSet<>();
 
     public Category() {
     }
@@ -38,13 +38,18 @@ public class Category {
         this.name = name;
     }
 
-    public List<Product> getProducts() {
+    public Set<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(List<Product> products) {
+    public void setProducts(Set<Product> products) {
         this.products = products;
     }
 
-
+    @Override
+    public String toString() {
+        return "Category{" +
+                "name='" + name + '\'' +
+                '}';
+    }
 }
