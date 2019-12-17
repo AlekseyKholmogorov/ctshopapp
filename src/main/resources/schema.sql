@@ -20,8 +20,10 @@ CREATE TABLE product (
 
 CREATE TABLE user (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(20) NOT NULL UNIQUE,
-    password VARCHAR(20) NOT NULL,
+    username VARCHAR(255) NOT NULL UNIQUE,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    active INT
     );
     
 CREATE TABLE user_order (
@@ -34,6 +36,7 @@ CREATE TABLE user_order (
 CREATE TABLE order_product (
 	order_id INT NOT NULL,
     product_id INT NOT NULL,
+    quantity_in_order INT NOT NULL DEFAULT 0,
     PRIMARY KEY (order_id, product_id),
     FOREIGN KEY (order_id) REFERENCES user_order (id),
     FOREIGN KEY (product_id) REFERENCES product (id)

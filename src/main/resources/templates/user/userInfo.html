@@ -7,34 +7,32 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Categories</title>
+    <title>User</title>
 </head>
 <body>
-<h2>Categories</h2>
-<input type="button" value="Add Category" onclick="window.location.href='showFormForAddCategory'; return false;" class="add-button"/>
-<table class="table table-striped">
+<h2>User Info</h2>
+<h3>Orders</h3>
+<table class="table-table table-striped">
     <thead>
     <tr>
-        <th scope="col">Id</th>
-        <th scope="col">Name</th>
+        <th scope="col">Order id</th>
+        <th scope="col">Status</th>
         <th scope="col">Action</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="category : ${categories}">
-        <td th:utext="${category.id}"></td>
-        <td th:utext="${category.name}"></td>
+    <tr th:each="order : ${user.getOrders()}">
+        <td th:utext="${order.getId()}" ></td>
+        <td th:utext="${order.getStatus()}" ></td>
         <td>
-            <a th:href="@{/showFormForUpdateCategory/{id}(id=${category.id})}">Update</a>
+            <a th:href="@{order/{id}(id=${order.id})}">Show Info</a>
             /
-            <a th:href="@{/deleteCategory/{id}(id=${category.id})}" onclick="if (!(confirm('Are you sure you want to delete this category?'))) return false">Delete</a>
+            <a th:href="@{/deleteOrder/{id}(id=${order.id})}" onclick="if (!(confirm('Are you sure you want to delete this product?'))) return false">Delete</a>
         </td>
-
-
     </tr>
     </tbody>
 </table>
-<a href="admin">Back to Main Page</a>
+<a href="/">Back to Main Page</a>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>

@@ -7,36 +7,34 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>Users</title>
+    <title>Categories</title>
 </head>
 <body>
-<h2>Users</h2>
-<input type="button" value="Add User" onclick="window.location.href='showFormForAddUser'; return false;" class="add-button"/>
+<h2>Categories</h2>
+<input type="button" value="Add Category" onclick="window.location.href='showFormForAddCategory'; return false;" class="add-button"/>
 <table class="table table-striped">
     <thead>
     <tr>
         <th scope="col">Id</th>
         <th scope="col">Name</th>
-        <th scope="col">Password</th>
         <th scope="col">Action</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="user : ${users}">
-        <td th:utext="${user.id}"></td>
-        <td th:utext="${user.name}"></td>
-        <td th:utext="${user.password}"></td>
+    <tr th:each="category : ${categories}">
+        <td th:utext="${category.id}"></td>
+        <td th:utext="${category.name}"></td>
         <td>
-            <a th:href="@{/showFormForUpdateUser/{id}(id=${user.id})}">Update</a>
+            <a th:href="@{/showFormForUpdateCategory/{id}(id=${category.id})}">Update</a>
             /
-            <a th:href="@{/deleteUser/{id}(id=${user.id})}" onclick="if (!(confirm('Are you sure you want to delete this User?'))) return false">Delete</a>
+            <a th:href="@{/deleteCategory/{id}(id=${category.id})}" onclick="if (!(confirm('Are you sure you want to delete this category?'))) return false">Delete</a>
         </td>
 
 
     </tr>
     </tbody>
 </table>
-<a href="admin">Back to Main Page</a>
+<a href="" th:href="@{/admin}">Back to Main Page</a>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>

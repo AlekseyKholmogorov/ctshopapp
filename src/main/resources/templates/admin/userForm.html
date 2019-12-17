@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:form="http://www.springframework.org/tags/form">
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -7,32 +9,36 @@
     <link rel="stylesheet" type="text/css" href="/css/style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
           integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <title>User</title>
+    <title>Add User</title>
 </head>
 <body>
-<h2>User Info</h2>
-<h3>Orders</h3>
-<table class="table-table table-striped">
-    <thead>
-    <tr>
-        <th scope="col">Order id</th>
-        <th scope="col">Status</th>
-        <th scope="col">Action</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="order : ${user.getOrders()}">
-        <td th:utext="${order.getId()}" ></td>
-        <td th:utext="${order.getStatus()}" ></td>
-        <td>
-            <a th:href="@{/order/{id}(id=${order.id})}">Show Info</a>
-            /
-            <a th:href="@{/deleteOrder/{id}(id=${order.id})}" onclick="if (!(confirm('Are you sure you want to delete this product?'))) return false">Delete</a>
-        </td>
-    </tr>
-    </tbody>
-</table>
-<a href="/">Back to Main Page</a>
+<form th:action="@{/saveUser}" th:object="${user}" method="POST">
+
+    <input type="hidden" th:field="*{id}">
+
+    <table>
+        <tbody>
+        <tr>
+            <td>User Name</td>
+            <td><input type="text" th:field="*{username}"/></td>
+        </tr>
+        <tr>
+            <td>User Password</td>
+            <td><input type="password" th:field="*{password}"/></td>
+        </tr>
+        <tr>
+            <td>User Email</td>
+            <td><input type="text" th:field="*{email}"/></td>
+        </tr>
+        <tr>
+            <td><label></label></td>
+            <td><input type="submit" value="Save"/></td>
+        </tr>
+        </tbody>
+    </table>
+
+</form>
+
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
         crossorigin="anonymous"></script>

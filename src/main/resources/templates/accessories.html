@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -41,7 +42,7 @@
         <th scope="col">Description</th>
         <th scope="col">Price</th>
         <th scope="col">Quantity</th>
-        <th scope="col">Action</th>
+        <th sec:authorize="hasRole('ROLE_USER')" scope="col">Action</th>
     </tr>
     </thead>
     <tbody>
@@ -51,7 +52,7 @@
         <td th:utext="${product.getDescription()}"></td>
         <td th:utext="${product.getPrice()}"></td>
         <td th:utext="${product.getQuantity()}"></td>
-        <td>
+        <td sec:authorize="hasRole('ROLE_USER')">
             <a th:href="@{/addProductToOrder/{id}(id=${product.id})}">Buy</a>
             /
             <a th:href="@{/showInfoAboutProduct/{id}(id=${product.id})}">Info</a>

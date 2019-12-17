@@ -1,5 +1,7 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security"
+      xmlns:th="https://www.thymeleaf.org ">
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -15,34 +17,39 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
-                        <a class="nav-link" href="/index">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="#" th:href="@{~/index}">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/coffee">Coffee</a>
+                        <a class="nav-link" th:href="@{~/coffee}">Coffee</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/tea">Tea</a>
+                        <a class="nav-link" th:href="@{~/tea}">Tea</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="/accessories">Accessories</a>
+                        <a class="nav-link" th:href="@{~/accessories}">Accessories</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="/admin">Admin Panel</a>
+                    <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
+                        <a class="nav-link" href="#" th:href="@{~/admin}">Admin Panel</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/userInfo/{id}(id = ${user.get().getId()})}"><span style="color: blue" th:text="${user.get().name}"></span></a>
+                    <li sec:authorize="hasRole('ROLE_USER')" class="nav-item">
+                        <a class="nav-link" href="#" th:href="@{~/user/userInfo/{id}(id=${user.id})}" ><span style="color: blue" >Shopping Cart</span></a>
                     </li>
 
                 </ul>
-                <form class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                <form class="form-inline my-2 my-lg-0" form-method="post" th:action="@{/logout}">
+                    <button sec:authorize="isAuthenticated()" class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</button>
+                    <button sec:authorize="isAnonymous()" th:href="@{~/login}" class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
                 </form>
+                <form style="margin-left: 10px" class="form-inline my-2 my-lg-0">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">not working now</button>
+                </form>
+
 
             </div>
         </nav>
         <div>
-            <h1 class="mainHeaderWelcomeText">Welcome to Coffee And Tea Shop"</h1>
+            <h1 class="mainHeaderWelcomeText">Welcome to Coffee And Tea Shop</h1>
         </div>
     </header>
 
@@ -56,7 +63,7 @@
                 <th scope="col">Name</th>
                 <th scope="col">Price</th>
                 <th scope="col">Quantity</th>
-                <th scope="col">Action</th>
+                <th sec:authorize="hasRole('ROLE_USER')" scope="col">Action</th>
             </tr>
             </thead>
             <tbody>
@@ -65,10 +72,10 @@
                 <td th:utext="${product.getName()}"></td>
                 <td th:utext="${product.getPrice()}"></td>
                 <td th:utext="${product.getQuantity()}"></td>
-                <td>
+                <td sec:authorize="hasRole('ROLE_USER')">
                     <a th:href="@{/addProductToOrder/{id}(id=${product.id})}">Buy</a>
                     /
-                    <a th:href="@{/showInfoAboutProduct/{id}(id=${product.id})}">Info</a>
+                    <a th:href="@{/showInfoAboutProduct/{id}(id=${product.id})}"> Info</a>
                 </td>
 
             </tr>

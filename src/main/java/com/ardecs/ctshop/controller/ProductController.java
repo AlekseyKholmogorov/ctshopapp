@@ -17,8 +17,9 @@ import java.util.Optional;
 @Controller
 public class ProductController {
 
-    private ProductRepository productRepository;
-    private CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
+
     private List<Category> categories;
 
     public ProductController(ProductRepository productRepository, CategoryRepository categoryRepository) {
@@ -30,18 +31,18 @@ public class ProductController {
     public String listProducts(Model model) {
         List<Product> products = productRepository.findAll();
         model.addAttribute("products", products);
-        return "product";
+        return "admin/product";
     }
 
     @GetMapping("/showFormForAddProduct")
     public String showFormForAdd(Model model) {
-        categories = categoryRepository.findAll();;
+        categories = categoryRepository.findAll();
         Category category = new Category();
         Product product = new Product();
         model.addAttribute("product", product);
         model.addAttribute("category", category);
         model.addAttribute("categories", categories);
-        return "productForm";
+        return "admin/productForm";
     }
 
     @PostMapping("/saveProduct")
@@ -52,13 +53,12 @@ public class ProductController {
 
     @GetMapping("showFormForUpdateProduct/{id}")
     public String showFormForUpdate(@PathVariable("id") Integer id, Model model) {
-        categories = categoryRepository.findAll();;
         Category category = new Category();
         Optional<Product> product = productRepository.findById(id);
         model.addAttribute("product", product);
         model.addAttribute("category", category);
         model.addAttribute("categories", categories);
-        return "productForm";
+        return "admin/productForm";
     }
     @GetMapping("/deleteProduct/{id}")
     public String deleteProduct(@PathVariable("id") Integer id) {

@@ -12,24 +12,24 @@ import java.util.Optional;
 @Controller
 public class CategoryController {
 
-    private CategoryRepository categoryRepository;
+    private final CategoryRepository categoryRepository;
 
     public CategoryController(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
     }
 
-    @GetMapping("/category")
+    @GetMapping("category")
     public String listCategories(Model model) {
         List<Category> categories = categoryRepository.findAll();
         model.addAttribute("categories", categories);
-        return "category";
+        return "admin/category";
     }
 
     @GetMapping("/showFormForAddCategory")
     public String showFormForAdd(Model model) {
         Category category = new Category();
         model.addAttribute("category", category);
-        return "categoryForm";
+        return "admin/categoryForm";
     }
 
     @PostMapping("/saveCategory")
@@ -42,7 +42,7 @@ public class CategoryController {
     public String showFormForUpdate(@PathVariable("id") Integer id, Model model) {
         Optional<Category> category = categoryRepository.findById(id);
         model.addAttribute("category", category);
-        return "categoryForm";
+        return "admin/categoryForm";
     }
     @GetMapping("/deleteCategory/{id}")
     public String deleteCategory(@PathVariable("id") Integer id) {

@@ -1,10 +1,12 @@
 package com.ardecs.ctshop.controller;
 
-import com.ardecs.ctshop.persistence.entity.Order;
+import com.ardecs.ctshop.persistence.entity.Role;
 import com.ardecs.ctshop.persistence.entity.User;
-import com.ardecs.ctshop.persistence.repository.OrderRepository;
-import com.ardecs.ctshop.persistence.repository.ProductRepository;
 import com.ardecs.ctshop.persistence.repository.UserRepository;
+import com.ardecs.ctshop.service.UserService;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,33 +20,43 @@ import java.util.Optional;
 @Controller
 public class UserController {
 
-    private UserRepository userRepository;
-    private ProductRepository productRepository;
-    private OrderRepository orderRepository;
+    private final UserRepository userRepository;
+    private final UserService userService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserController(UserRepository userRepository, ProductRepository productRepository, OrderRepository orderRepository) {
+
+    public UserController(UserRepository userRepository, UserService userService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.productRepository = productRepository;
-        this.orderRepository = orderRepository;
+        this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping("/user")
     public String listUsers(Model model) {
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
-        return "user";
+        return "admin/user";
     }
 
     @GetMapping("/showFormForAddUser")
     public String showFormForAdd(Model model) {
         User user = new User();
         model.addAttribute("user", user);
-        return "userForm";
+        return "admin/userForm";
     }
 
     @PostMapping("/saveUser")
     public String saveUser(@ModelAttribute("user") User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setActive(1);
+        if (user.getUsername().toLowerCase().equals("admin")) {
+            user.getRoles().add(Role.ADMIN);
+            user.getRoles().remove(Role.USER);
+        } else {
+            user.getRoles().add(Role.USER);
+        }
         userRepository.save(user);
+
         return "redirect:/user";
     }
 
@@ -52,7 +64,7 @@ public class UserController {
     public String showFormForUpdate(@PathVariable("id") Integer id, Model model) {
         Optional<User> user = userRepository.findById(id);
         model.addAttribute("user", user);
-        return "userForm";
+        return "admin/userForm";
     }
     @GetMapping("/deleteUser/{id}")
     public String deleteUser(@PathVariable("id") Integer id) {
@@ -60,47 +72,21 @@ public class UserController {
         return "redirect:/user";
     }
 
-    @GetMapping("/userInfo/{id}")
+    @GetMapping("user/userInfo/{id}")
     public String showUserInfo(@PathVariable("id") Integer id, Model model) {
         Optional<User> user = userRepository.findById(id);
         model.addAttribute("user", user.get());
-        return "userInfo";
+        return "user/userInfo";
     }
 
     @GetMapping("addProductToOrder/{id}")
     public String addProductToOrder(@PathVariable("id") Integer id, Model model) {
-        Optional<User> user = userRepository.findById(1);
-        if (user.get().getOrders().size() == 0) {
-            Order order = new Order(false, user.get());
-            if (productRepository.findById(id).get().getQuantity() == 0) {
-                return "noProductInStock";
-            } else {
-                order.getProducts().add(productRepository.findById(id).get());
-                user.get().getOrders().add(order);
-                orderRepository.save(order);
-            }
-        } else {
-            for (Order order : user.get().getOrders()) {
-                if (!order.getStatus()) {
-                    if (productRepository.findById(id).get().getQuantity() == 0) {
-                        return "noProductInStock";
-                    } else {
-                        order.getProducts().add(productRepository.findById(id).get());
-                        orderRepository.save(order);
-                    }
-                } else {
-                    Order order1 = new Order(false, user.get());
-                    if (productRepository.findById(id).get().getQuantity() == 0) {
-                        return "noProductInStock";
-                    } else {
-                        order1.getProducts().add(productRepository.findById(id).get());
-                        user.get().getOrders().add(order1);
-                        orderRepository.save(order);
-                    }
-                }
-
-            }
-        }
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String name = auth.getName();
+        User user = userRepository.findByUsername(name);
+        userService.buyProduct(user, id);
         return "redirect:/index";
     }
+
+
 }

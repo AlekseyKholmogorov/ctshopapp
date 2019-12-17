@@ -25,5 +25,4 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     @Loggable
     @Query("from Product p where p.quantity > 0 order by p.price")
     List<Product> findProductsByAvailabilityAndSortByPrice();
-
 }
