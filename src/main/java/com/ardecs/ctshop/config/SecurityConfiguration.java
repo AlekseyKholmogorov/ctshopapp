@@ -43,8 +43,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .passwordParameter("txtPassword")
                 .and()
                 .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
-                .and()
-                .rememberMe().tokenValiditySeconds(604800).key("Key").rememberMeParameter("checkRememberMe");
+                .and();
+                //.rememberMe().tokenValiditySeconds(604800).key("Key").rememberMeParameter("checkRememberMe");
 
         http.csrf().disable();
         http.headers().frameOptions().disable();

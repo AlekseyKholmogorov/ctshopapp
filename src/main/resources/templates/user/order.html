@@ -21,6 +21,7 @@
         <th scope="col">Price</th>
         <th scope="col">Category</th>
         <th scope="col">Quantity</th>
+        <th scope="col">Total Price</th>
 
     </tr>
     </thead>
@@ -33,9 +34,29 @@
         <td th:utext="${product.getKey().price}"></td>
         <td th:utext="${product.getKey().category.name}"></td>
         <td th:utext="${product.getValue()}"></td>
+        <td th:utext="${product.getValue() * product.getKey().price}"></td>
     </tr>
     </tbody>
 </table>
+
+<p>Total Sum is: <span th:utext="${totalSum}">0</span><p>
+
+
+<form th:action="@{{id}/buy(id=${order.get().id})}" th:object="${order}" method="POST">
+    <input type="hidden" th:field="*{id}">
+    <table>
+        <tbody>
+        <tr>
+            <td><label></label></td>
+            <td th:if="${order.get().status == false}"><input type="submit" value="Buy"/></td>
+            <td th:if="${order.get().status == true}">Order is Done</td>
+        </tr>
+
+        </tbody>
+    </table>
+
+</form>
+
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"

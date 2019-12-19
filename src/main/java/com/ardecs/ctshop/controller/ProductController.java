@@ -36,28 +36,27 @@ public class ProductController {
 
     @GetMapping("/showFormForAddProduct")
     public String showFormForAdd(Model model) {
-        categories = categoryRepository.findAll();
         Category category = new Category();
         Product product = new Product();
         model.addAttribute("product", product);
         model.addAttribute("category", category);
-        model.addAttribute("categories", categories);
+        model.addAttribute("categories", categoryRepository.findAll());
         return "admin/productForm";
     }
 
     @PostMapping("/saveProduct")
-    public String saveCategory(@ModelAttribute("product") Product product) {
+    public String saveProduct(@ModelAttribute("product") Product product) {
         productRepository.save(product);
         return "redirect:/product";
     }
 
     @GetMapping("showFormForUpdateProduct/{id}")
     public String showFormForUpdate(@PathVariable("id") Integer id, Model model) {
-        Category category = new Category();
+
         Optional<Product> product = productRepository.findById(id);
-        model.addAttribute("product", product);
-        model.addAttribute("category", category);
-        model.addAttribute("categories", categories);
+        model.addAttribute("product", product.get());
+        model.addAttribute("category", product.get().getCategory().getName());
+        model.addAttribute("categories", categoryRepository.findAll());
         return "admin/productForm";
     }
     @GetMapping("/deleteProduct/{id}")

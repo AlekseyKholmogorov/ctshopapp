@@ -25,56 +25,69 @@ public class UserService {
     }
 
     public String buyProduct(User user, Integer id) {
+
         Optional<Product> product = productRepository.findById(id);
         if (user.getOrders().size() == 0) {
             Order order = new Order(false, user);
+            orderRepository.save(order);
+            user.getOrders().add(order);
             OrderProduct orderProduct = new OrderProduct(order, product.get());
 
             if (product.get().getQuantity() == 0) {
                 return "noProductInStock";
             } else {
 
-                productRepository.findById(id).get().setQuantity(productRepository.findById(id).get().getQuantity() - 1);
+                product.get().setQuantity(product.get().getQuantity() - 1);
                 orderProduct.setQuantityInOrder(orderProduct.getQuantityInOrder() + 1);
-                order.getOrderProducts().add(orderProduct);
-                user.getOrders().add(order);
-                orderRepository.save(order);
                 orderProductRepository.save(orderProduct);
+                order.getOrderProducts().add(orderProduct);
             }
         } else {
-            for (Order o : user.getOrders()) {
-                if (!o.getStatus()) {
-                    if (productRepository.findById(id).get().getQuantity() == 0) {
-                        return "noProductInStock";
-                    } else {
-                        product.get().setQuantity(productRepository.findById(id).get().getQuantity() - 1);
 
-                        if (orderProductRepository.findByOrderAndProduct(o, product.get()).getProduct().getId().equals(product.get().getId())) {
-                            orderProductRepository.findByOrderAndProduct(o, product.get()).setQuantityInOrder(orderProductRepository.findByOrder(o).getQuantityInOrder() + 1);
-                            orderProductRepository.save(orderProductRepository.findByOrder(o));
-                        } else {
-                            OrderProduct orderProduct1 = new OrderProduct(o, product.get());
-                            orderProduct1.setQuantityInOrder(orderProduct1.getQuantityInOrder() + 1);
-                            o.getOrderProducts().add(orderProduct1);
-                            orderProductRepository.save(orderProduct1);
-                            //orderProductRepository.findByProduct(productRepository.findById(id).get()).setQuantityInOrder(orderProductRepository.findByOrderAndProduct(o, productRepository.findById(id).get()).getQuantityInOrder() + 1);
-                            //o.getOrderProducts().add(orderProductRepository.findByOrderAndProduct(o, productRepository.findById(id).get()));
-                            //orderProductRepository.save(orderProductRepository.findByOrderAndProduct(o, productRepository.findById(id).get()));
-                        }
-                        orderRepository.save(o);
-                    }
+            Order order = orderRepository.findByStatus(false);
+            if (order == null ) {
+                Order order1 = new Order(false, user);
+                orderRepository.save(order1);
+                user.getOrders().add(order1);
+                OrderProduct orderProduct = new OrderProduct(order1, product.get());
+                if (productRepository.findById(id).get().getQuantity() == 0) {
+                    return "noProductInStock";
                 } else {
-                    Order order1 = new Order(false, user);
-                    if (productRepository.findById(id).get().getQuantity() == 0) {
-                        return "noProductInStock";
-                    } else {
-                        productRepository.findById(id).get().setQuantity(productRepository.findById(id).get().getQuantity() - 1);
-                        orderRepository.save(order1);
-                    }
+                    product.get().setQuantity(product.get().getQuantity() - 1);
+                    orderProduct.setQuantityInOrder(orderProduct.getQuantityInOrder() + 1);
+                    orderProductRepository.save(orderProduct);
+                    order1.getOrderProducts().add(orderProduct);
                 }
+            } else {
+                if (product.get().getQuantity() == 0) {
+                    return "noProductInStock";
+                } else {
+                    product.get().setQuantity(product.get().getQuantity() - 1);
+                    OrderProductId orderProductId = new OrderProductId(order.getId(), product.get().getId());
+                    if (orderProductRepository.findById(orderProductId).isPresent() &&
+                            orderProductRepository.findById(orderProductId).get().getProduct().getId().equals(product.get().getId()) &&
+                            orderProductRepository.findById(orderProductId).get().getOrder().getId().equals(order.getId())) {
+                        OrderProduct orderProduct = orderProductRepository.findById(orderProductId).get();
+                        order.getOrderProducts().remove(orderProduct);
+                        orderProduct.setQuantityInOrder(orderProduct.getQuantityInOrder() + 1);
+                        orderProductRepository.save(orderProduct);
+                        order.getOrderProducts().add(orderProduct);
 
+                    } else {
+                        OrderProduct orderProduct1 = new OrderProduct(order, product.get());
+                        orderProduct1.setQuantityInOrder(orderProduct1.getQuantityInOrder() + 1);
+                        orderProductRepository.save(orderProduct1);
+                        order.getOrderProducts().add(orderProduct1);
+
+                    }
+                    orderRepository.save(order);
+                }
             }
+
         }
+
         return "";
+
     }
+
 }
