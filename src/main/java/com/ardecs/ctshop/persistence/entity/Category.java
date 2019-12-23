@@ -1,6 +1,8 @@
 package com.ardecs.ctshop.persistence.entity;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,6 +13,7 @@ public class Category {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Integer id;
+    @Size(min=2, max=50)
     private String name;
     @OneToMany(mappedBy = "category")
     private Set<Product> products = new HashSet<>();

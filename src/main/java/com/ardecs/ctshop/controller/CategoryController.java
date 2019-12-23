@@ -4,8 +4,10 @@ import com.ardecs.ctshop.persistence.entity.Category;
 import com.ardecs.ctshop.persistence.repository.CategoryRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +35,10 @@ public class CategoryController {
     }
 
     @PostMapping("/saveCategory")
-    public String saveCategory(@ModelAttribute("category") Category category) {
+    public String saveCategory(@ModelAttribute("category") @Valid Category category, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "admin/categoryForm";
+        }
         categoryRepository.save(category);
         return "redirect:/category";
     }

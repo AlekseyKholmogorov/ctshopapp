@@ -15,22 +15,23 @@
                 <i class="fa fa-user"></i> Please Login
             </div>
             <div class="card-block" style="padding: 24px;">
-                <form name="f" th:action="@{/registration}" method="post">
+                <form th:action="@{/registration}" th:object="${user}" method="POST">
+                    <input type="hidden" th:field="*{id}">
                     <fieldset>
                         <div class="form-group">
-                            <label>Username</label>
-                            <input type="text" class="form-control" id="username" name="username"
-                                   placeholder="Username">
+                            <label>User Name</label>
+                            <input type="text" class="form-control" th:field="*{username}" placeholder="Name">
+                            <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</div>
                         </div>
                         <div class="form-group">
-                            <label>Password</label>
-                            <input type="password" class="form-control" id="password" name="password"
-                                   placeholder="Password">
+                            <label>User Password</label>
+                            <input type="password" class="form-control" th:field="*{password}" placeholder="Password">
+                            <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password Error</div>
                         </div>
                         <div class="form-group">
-                            <label >Email</label>
-                            <input type="email" class="form-control" id="email" name="email"
-                                   placeholder="Email">
+                            <label>User Email</label>
+                            <input type="email" class="form-control" th:field="*{email}" placeholder="Email">
+                            <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div>
                         </div>
                         <div class="form-actions" style="margin-top: 12px;">
                             <button type="submit" class="btn btn-success">Registration</button>

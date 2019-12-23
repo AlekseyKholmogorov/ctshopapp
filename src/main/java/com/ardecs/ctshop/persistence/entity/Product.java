@@ -1,6 +1,10 @@
 package com.ardecs.ctshop.persistence.entity;
 
+
+import javafx.beans.DefaultProperty;
+
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -12,12 +16,14 @@ public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
+    @Size(min=2, max=20)
     private String name;
+    @Size(min=2, max=20)
     private String region;
+    @Size(min=2)
     private String description;
-    private Double price;
-    private Integer quantity;
+    private Double price = 0.0;
+    private Integer quantity = 0;
 
     @ManyToOne
     @JoinColumn(name = "category_id")

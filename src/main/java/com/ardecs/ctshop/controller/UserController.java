@@ -9,11 +9,13 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -46,7 +48,17 @@ public class UserController {
     }
 
     @PostMapping("/saveUser")
-    public String saveUser(@ModelAttribute("user") User user) {
+    public String saveUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "admin/userForm";
+        }
+
+        User userFromDataBase = userRepository.findByUsernameAndEmail(user.getUsername(), user.getEmail());
+
+        if (userFromDataBase != null) {
+            return "admin/userForm";
+        }
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(1);
         if (user.getUsername().toLowerCase().equals("admin")) {

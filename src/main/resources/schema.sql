@@ -11,8 +11,8 @@ CREATE TABLE product (
 	id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(20) NOT NULL,
     region VARCHAR(20) NOT NULL,
-    description TEXT NOT NULL,
-    price DECIMAL(8,2) NOT NULL,
+    description TEXT,
+    price DECIMAL(8,2) NOT NULL DEFAULT 0.0,
     quantity INT NOT NULL DEFAULT 0,
     category_id INT NOT NULL,
     FOREIGN KEY (category_id) REFERENCES category (id)

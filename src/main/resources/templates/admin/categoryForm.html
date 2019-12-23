@@ -11,24 +11,27 @@
     <title>Add Category</title>
 </head>
 <body>
-<form th:action="@{/saveCategory}" th:object="${category}" method="POST">
-
-    <input type="hidden" th:field="*{id}">
-
-    <table>
-        <tbody>
-        <tr>
-            <td>Category Name</td>
-            <td><input type="text" th:field="*{name}"/></td>
-        </tr>
-        <tr>
-            <td><label></label></td>
-            <td><input type="submit" value="Save"/></td>
-        </tr>
-        </tbody>
-    </table>
-
-</form>
+<div class="container">
+    <div style="width:600px;margin-left: auto;margin-right: auto;margin-top:24px;padding: 24px;">
+        <div class="card">
+            <div class="card-block" style="padding: 24px;">
+                <form th:action="@{/saveCategory}" th:object="${category}" method="POST">
+                    <input type="hidden" th:field="*{id}">
+                    <fieldset>
+                        <div class="form-group">
+                            <label>Name</label>
+                            <input type="text" class="form-control" th:field="*{name}" placeholder="Name">
+                            <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</div>
+                        </div>
+                        <div class="form-actions" style="margin-top: 12px;">
+                            <button type="submit" class="btn btn-success">Save Category</button>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
         integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"

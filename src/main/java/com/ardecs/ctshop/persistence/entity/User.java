@@ -2,6 +2,10 @@ package com.ardecs.ctshop.persistence.entity;
 
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.*;
 
 @Entity
@@ -11,8 +15,12 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Size(min = 3, max = 255)
     private String username;
+    @Size(min = 3, max = 255)
     private String password;
+    @NotNull
+    @Pattern(regexp = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$", message="Email address is invalid")
     private String email;
     private int active;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
