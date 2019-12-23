@@ -1,7 +1,6 @@
 package com.ardecs.ctshop.persistence.entity;
 
 import javax.persistence.*;
-import java.io.Serializable;
 import java.util.Objects;
 
 @Entity
