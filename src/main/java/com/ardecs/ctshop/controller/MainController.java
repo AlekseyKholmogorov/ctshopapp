@@ -9,6 +9,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +27,7 @@ public class MainController {
     }
 
     @GetMapping({"/index", "", "/"})
-    public String showMainPage(Model model) {
+    public String showMainPage(Model model, @RequestParam(defaultValue = "") String productName) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
@@ -35,8 +36,7 @@ public class MainController {
             Optional<User> user = userRepository.findById(userFromDataBase.getId());
             model.addAttribute("user", user.get());
         }
-        List<Product> list = productRepository.findAll();
-        model.addAttribute("products", list);
+        model.addAttribute("products", productRepository.findByNameLike("%" + productName + "%"));
         return "index";
     }
 

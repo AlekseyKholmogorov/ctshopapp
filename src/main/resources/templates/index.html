@@ -40,9 +40,9 @@
                     <button sec:authorize="isAuthenticated()" class="btn btn-outline-danger my-2 my-sm-0" type="submit">Logout</button>
                     <button sec:authorize="isAnonymous()" th:href="@{~/login}" class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
                 </form>
-                <form style="margin-left: 10px" class="form-inline my-2 my-lg-0">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">not working now</button>
+                <form style="margin-left: 10px" class="form-inline my-2 my-lg-0" th:action="@{/index}">
+                    <input class="form-control mr-sm-2" type="search" placeholder="Search Product" aria-label="Search" name="productName">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
 
 
