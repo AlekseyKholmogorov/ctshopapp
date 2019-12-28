@@ -92,7 +92,7 @@ public class UserController {
     }
 
     @GetMapping("addProductToOrder/{id}")
-    public String addProductToOrder(@PathVariable("id") Integer id, Model model) {
+    public String addProductToOrder(@PathVariable("id") Integer id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         User user = userRepository.findByUsername(name);

@@ -19,19 +19,14 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="#" th:href="@{~/index}">Home <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{~/coffee}">Coffee</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{~/tea}">Tea</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{~/accessories}">Accessories</a>
+                    <li class="nav-item" th:each="category : ${categories}">
+                        <a class="nav-link" th:href="@{/products/{categoryName}(categoryName=${category.name})}" th:text="${category.name}"></a>
                     </li>
                     <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
                         <a class="nav-link" href="#" th:href="@{~/admin}">Admin Panel</a>
                     </li>
                     <li sec:authorize="hasRole('ROLE_USER')" class="nav-item">
+
                         <a class="nav-link" href="#" th:href="@{~/user/userInfo/{id}(id=${user.id})}" ><span style="color: blue" >Shopping Cart</span></a>
                     </li>
 

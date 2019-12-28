@@ -15,7 +15,7 @@ public class Category {
     private Integer id;
     @Size(min=2, max=50)
     private String name;
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private Set<Product> products = new HashSet<>();
 
     public Category() { }
