@@ -19,9 +19,14 @@
                     <li class="nav-item active">
                         <a class="nav-link" href="#" th:href="@{~/index}">Home <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item" th:each="category : ${categories}">
-                        <a class="nav-link" th:href="@{/products/{categoryName}(categoryName=${category.name})}" th:text="${category.name}"></a>
-                    </li>
+                    <div  class="dropdown">
+                        <button class="btn btn-main dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Categories
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                            <a th:each="category : ${categories}" class="nav-link" th:href="@{/products/{categoryName}(categoryName=${category.name})}" th:text="${category.name}"></a>
+                        </div>
+                    </div>
                     <li sec:authorize="hasRole('ROLE_ADMIN')" class="nav-item">
                         <a class="nav-link" href="#" th:href="@{~/admin}">Admin Panel</a>
                     </li>
