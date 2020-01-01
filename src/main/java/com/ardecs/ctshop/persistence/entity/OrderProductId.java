@@ -13,7 +13,7 @@ public class OrderProductId implements Serializable {
     @Column(name = "product_id")
     private Integer productId;
 
-    public OrderProductId() {};
+    public OrderProductId() {}
     public OrderProductId(Integer orderId, Integer productId) {
         this.orderId = orderId;
         this.productId = productId;
