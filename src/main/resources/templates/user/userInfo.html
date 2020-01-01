@@ -16,14 +16,14 @@
     <thead>
     <tr>
         <th scope="col">Order id</th>
-        <th scope="col">Status</th>
+        <th scope="col">Is Paid</th>
         <th scope="col">Action</th>
     </tr>
     </thead>
     <tbody>
     <tr th:each="order : ${user.getOrders()}">
         <td th:utext="${order.getId()}" ></td>
-        <td th:utext="${order.getStatus()}" ></td>
+        <td th:utext="${order.getIsPaid()}" ></td>
         <td>
             <a th:href="@{order/{id}(id=${order.id})}">Show Info</a>
             /

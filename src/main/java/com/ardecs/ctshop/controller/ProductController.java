@@ -1,5 +1,6 @@
 package com.ardecs.ctshop.controller;
 
+import com.ardecs.ctshop.exceptions.NotFoundException;
 import com.ardecs.ctshop.persistence.entity.Category;
 import com.ardecs.ctshop.persistence.entity.Product;
 import com.ardecs.ctshop.persistence.repository.CategoryRepository;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class ProductController {
@@ -48,8 +48,7 @@ public class ProductController {
     }
 
     @PostMapping("/saveProduct")
-    public String saveProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult, Model model) {
-        model.addAttribute("categories", categoryRepository.findAll());
+    public String saveProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "admin/productForm";
         }
@@ -60,9 +59,9 @@ public class ProductController {
     @GetMapping("showFormForUpdateProduct/{id}")
     public String showFormForUpdate(@PathVariable("id") Integer id, Model model) {
 
-        Optional<Product> product = productRepository.findById(id);
-        model.addAttribute("product", product.get());
-        model.addAttribute("category", product.get().getCategory().getName());
+        Product product = productRepository.findById(id).orElseThrow(NotFoundException::new);
+        model.addAttribute("product", product);
+        model.addAttribute("category", product.getCategory().getName());
         model.addAttribute("categories", categoryRepository.findAll());
         return "admin/productForm";
     }
@@ -73,7 +72,7 @@ public class ProductController {
     }
     @GetMapping("/showInfoAboutProduct/{id}")
     public String showProductInfo(@PathVariable("id") Integer id, Model model) {
-        Optional<Product> product = productRepository.findById(id);
+        Product product = productRepository.findById(id).orElseThrow(NotFoundException::new);
         model.addAttribute("product", product);
         return "productInfo";
     }

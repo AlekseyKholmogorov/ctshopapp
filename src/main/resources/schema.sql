@@ -28,7 +28,7 @@ CREATE TABLE user (
     
 CREATE TABLE user_order (
 	id INT AUTO_INCREMENT PRIMARY KEY,
-    status TINYINT(1) NOT NULL DEFAULT 0,
+    is_paid TINYINT(1) NOT NULL DEFAULT 0,
     user_id INT NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user (id)
     );    

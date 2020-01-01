@@ -1,5 +1,6 @@
 package com.ardecs.ctshop.controller;
 
+import com.ardecs.ctshop.exceptions.NotFoundException;
 import com.ardecs.ctshop.persistence.entity.Role;
 import com.ardecs.ctshop.persistence.entity.User;
 import com.ardecs.ctshop.persistence.repository.UserRepository;
@@ -17,7 +18,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class UserController {
@@ -74,7 +74,7 @@ public class UserController {
 
     @GetMapping("showFormForUpdateUser/{id}")
     public String showFormForUpdate(@PathVariable("id") Integer id, Model model) {
-        Optional<User> user = userRepository.findById(id);
+        User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
         model.addAttribute("user", user);
         return "admin/userForm";
     }
@@ -86,8 +86,8 @@ public class UserController {
 
     @GetMapping("user/userInfo/{id}")
     public String showUserInfo(@PathVariable("id") Integer id, Model model) {
-        Optional<User> user = userRepository.findById(id);
-        model.addAttribute("user", user.get());
+        User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
+        model.addAttribute("user", user);
         return "user/userInfo";
     }
 
@@ -96,8 +96,7 @@ public class UserController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String name = auth.getName();
         User user = userRepository.findByUsername(name);
-        userService.buyProduct(user, id);
-        return "redirect:/index";
+        return userService.buyProduct(user, id);
     }
 
 

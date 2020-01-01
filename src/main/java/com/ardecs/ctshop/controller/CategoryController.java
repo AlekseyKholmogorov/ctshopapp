@@ -1,5 +1,6 @@
 package com.ardecs.ctshop.controller;
 
+import com.ardecs.ctshop.exceptions.NotFoundException;
 import com.ardecs.ctshop.persistence.entity.Category;
 import com.ardecs.ctshop.persistence.repository.CategoryRepository;
 import org.springframework.stereotype.Controller;
@@ -9,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
-import java.util.Optional;
 
 @Controller
 public class CategoryController {
@@ -45,7 +45,7 @@ public class CategoryController {
 
     @GetMapping("showFormForUpdateCategory/{id}")
     public String showFormForUpdate(@PathVariable("id") Integer id, Model model) {
-        Optional<Category> category = categoryRepository.findById(id);
+        Category category = categoryRepository.findById(id).orElseThrow(NotFoundException::new);
         model.addAttribute("category", category);
         return "admin/categoryForm";
     }

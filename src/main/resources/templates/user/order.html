@@ -39,17 +39,17 @@
     </tbody>
 </table>
 
-<p>Total Sum is: <span th:utext="${totalSum}">0</span><p>
+<p>Total Sum is: <span th:utext="${totalSum}"></span><p>
 
 
-<form th:action="@{{id}/buy(id=${order.get().id})}" th:object="${order}" method="POST">
+<form th:action="@{{id}/buy(id=${order.id})}" th:object="${order}" method="POST">
     <input type="hidden" th:field="*{id}">
     <table>
         <tbody>
         <tr>
             <td><label></label></td>
-            <td th:if="${order.get().status == false}"><input type="submit" value="Buy"/></td>
-            <td th:if="${order.get().status == true}">Order is Done</td>
+            <td th:if="${order.isPaid == false}"><input type="submit" value="Buy"/></td>
+            <td th:if="${order.isPaid == true}">Order is Done</td>
         </tr>
 
         </tbody>

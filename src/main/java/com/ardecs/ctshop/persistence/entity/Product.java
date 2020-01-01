@@ -1,8 +1,5 @@
 package com.ardecs.ctshop.persistence.entity;
 
-
-import javafx.beans.DefaultProperty;
-
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;

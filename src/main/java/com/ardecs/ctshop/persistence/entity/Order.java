@@ -12,7 +12,8 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private boolean status;
+    @Column(name = "is_paid")
+    private boolean isPaid;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -25,8 +26,8 @@ public class Order implements Serializable {
 
     }
 
-    public Order(boolean status, User user) {
-        this.status = status;
+    public Order(boolean isPaid, User user) {
+        this.isPaid = isPaid;
         this.user = user;
     }
 
@@ -46,12 +47,12 @@ public class Order implements Serializable {
         this.id = id;
     }
 
-    public boolean getStatus() {
-        return status;
+    public boolean getIsPaid() {
+        return isPaid;
     }
 
-    public void setStatus(boolean status) {
-        this.status = status;
+    public void setIsPaid(boolean status) {
+        this.isPaid = status;
     }
 
     public User getUser() {
