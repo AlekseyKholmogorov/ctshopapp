@@ -1,5 +1,9 @@
 package com.ardecs.ctshop.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
@@ -15,6 +19,7 @@ public class Category {
     @Size(min=2, max=50)
     private String name;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
+    @JsonIgnore
     private Set<Product> products = new HashSet<>();
 
     public Category() { }

@@ -33,21 +33,21 @@ public class UserController {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @GetMapping("/user")
+    @GetMapping("admin/user")
     public String listUsers(Model model) {
         List<User> users = userRepository.findAll();
         model.addAttribute("users", users);
         return "admin/user";
     }
 
-    @GetMapping("/showFormForAddUser")
+    @GetMapping("admin/showFormForAddUser")
     public String showFormForAdd(Model model) {
         User user = new User();
         model.addAttribute("user", user);
         return "admin/userForm";
     }
 
-    @PostMapping("/saveUser")
+    @PostMapping("admin/saveUser")
     public String saveUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return "admin/userForm";
@@ -69,19 +69,19 @@ public class UserController {
         }
         userRepository.save(user);
 
-        return "redirect:/user";
+        return "redirect:admin/user";
     }
 
-    @GetMapping("showFormForUpdateUser/{id}")
+    @GetMapping("admin/showFormForUpdateUser/{id}")
     public String showFormForUpdate(@PathVariable("id") Integer id, Model model) {
         User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
         model.addAttribute("user", user);
         return "admin/userForm";
     }
-    @GetMapping("/deleteUser/{id}")
+    @GetMapping("admin/deleteUser/{id}")
     public String deleteUser(@PathVariable("id") Integer id) {
         userRepository.deleteById(id);
-        return "redirect:/user";
+        return "redirect:admin/user";
     }
 
     @GetMapping("user/userInfo/{id}")

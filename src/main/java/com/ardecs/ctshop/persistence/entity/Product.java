@@ -1,5 +1,8 @@
 package com.ardecs.ctshop.persistence.entity;
 
+import com.ardecs.ctshop.persistence.Views;
+import com.fasterxml.jackson.annotation.*;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
@@ -8,17 +11,22 @@ import java.util.Set;
 
 @Entity
 @Table(name = "product")
+@JsonIdentityInfo(
+        generator= ObjectIdGenerators.PropertyGenerator.class,
+        property="id")
 public class Product implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     @Size(min=2, max=20)
+    @JsonView(Views.NamePrice.class)
     private String name;
     @Size(min=2, max=20)
     private String region;
     @Size(min=2)
     private String description;
+    @JsonView(Views.NamePrice.class)
     private Double price = 0.0;
     private Integer quantity = 0;
 
@@ -27,6 +35,7 @@ public class Product implements Serializable {
     private Category category;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    @JsonIgnore
     private Set<OrderProduct> orderProducts = new HashSet<>(0);
 
     public Product() {
