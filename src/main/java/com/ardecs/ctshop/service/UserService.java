@@ -6,7 +6,6 @@ import com.ardecs.ctshop.persistence.repository.OrderProductRepository;
 import com.ardecs.ctshop.persistence.repository.OrderRepository;
 import com.ardecs.ctshop.persistence.repository.ProductRepository;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 
 
@@ -23,7 +22,7 @@ public class UserService {
         this.orderProductRepository = orderProductRepository;
     }
 
-    @Transactional
+    //@Transactional
     public String buyProduct(User user, Integer id) {
 
         Product product = productRepository.findById(id).orElseThrow(NotFoundException::new);
