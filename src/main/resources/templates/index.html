@@ -20,7 +20,7 @@
                         <a class="nav-link" href="#" th:href="@{~/index}">Home <span class="sr-only">(current)</span></a>
                     </li>
                     <div  class="dropdown">
-                        <button class="btn btn-main dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button style="margin-top: 1px" class="btn btn-main dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Categories
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -33,6 +33,7 @@
                     <li sec:authorize="hasRole('ROLE_USER')" class="nav-item">
 
                         <a class="nav-link" href="#" th:href="@{~/user/userInfo/{id}(id=${user.id})}" ><span style="color: blue" >Shopping Cart</span></a>
+
                     </li>
 
                 </ul>

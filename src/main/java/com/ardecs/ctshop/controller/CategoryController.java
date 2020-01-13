@@ -9,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 public class CategoryController {
@@ -22,15 +21,13 @@ public class CategoryController {
 
     @GetMapping("category")
     public String listCategories(Model model) {
-        List<Category> categories = categoryRepository.findAll();
-        model.addAttribute("categories", categories);
+        model.addAttribute("categories", categoryRepository.findAll());
         return "admin/category";
     }
 
     @GetMapping("/showFormForAddCategory")
     public String showFormForAdd(Model model) {
-        Category category = new Category();
-        model.addAttribute("category", category);
+        model.addAttribute("category", new Category());
         return "admin/categoryForm";
     }
 

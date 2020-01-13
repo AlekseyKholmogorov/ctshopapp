@@ -51,8 +51,10 @@ public class DbInitData implements CommandLineRunner {
 
         User user1 = new User("admin", passwordEncoder.encode("admin"), "admin@example.com");
         user1.getRoles().add(Role.ADMIN);
+        user1.setActive(1);
         User user2 = new User("john", passwordEncoder.encode("123"), "john@example.com");
         user2.getRoles().add(Role.USER);
+        user2.setActive(1);
         List<User> userList = Arrays.asList(user1, user2);
         this.userRepository.saveAll(userList);
     }

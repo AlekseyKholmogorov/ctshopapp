@@ -1,13 +1,11 @@
 package com.ardecs.ctshop.controller;
 
 import com.ardecs.ctshop.exceptions.NotFoundException;
-import com.ardecs.ctshop.persistence.entity.Role;
 import com.ardecs.ctshop.persistence.entity.User;
 import com.ardecs.ctshop.persistence.repository.UserRepository;
+import com.ardecs.ctshop.service.RegistrationService;
 import com.ardecs.ctshop.service.UserService;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,71 +15,59 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 public class UserController {
 
     private final UserRepository userRepository;
     private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
+    private final RegistrationService registrationService;
 
 
-    public UserController(UserRepository userRepository, UserService userService, PasswordEncoder passwordEncoder) {
+    public UserController(UserRepository userRepository, UserService userService, RegistrationService registrationService) {
         this.userRepository = userRepository;
         this.userService = userService;
-        this.passwordEncoder = passwordEncoder;
+        this.registrationService = registrationService;
     }
 
-    @GetMapping("admin/user")
+    @GetMapping("user")
     public String listUsers(Model model) {
-        List<User> users = userRepository.findAll();
-        model.addAttribute("users", users);
+        model.addAttribute("users", userRepository.findAll());
         return "admin/user";
     }
 
-    @GetMapping("admin/showFormForAddUser")
+    @GetMapping("showFormForAddUser")
     public String showFormForAdd(Model model) {
-        User user = new User();
-        model.addAttribute("user", user);
+        model.addAttribute("user", new User());
         return "admin/userForm";
     }
 
-    @PostMapping("admin/saveUser")
+    @PostMapping("saveUser")
     public String saveUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
+
+        if (user.getId() != null && !bindingResult.hasErrors()) {
+            registrationService.registration(user);
+            return "redirect:/user";
+        }
+
+        if (bindingResult.hasErrors() | registrationService.isRegistrationValid(user)) {
             return "admin/userForm";
         }
 
-        User userFromDataBase = userRepository.findByUsernameAndEmail(user.getUsername(), user.getEmail());
-
-        if (userFromDataBase != null) {
-            return "admin/userForm";
-        }
-
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setActive(1);
-        if (user.getUsername().toLowerCase().equals("admin")) {
-            user.getRoles().add(Role.ADMIN);
-            user.getRoles().remove(Role.USER);
-        } else {
-            user.getRoles().add(Role.USER);
-        }
-        userRepository.save(user);
-
-        return "redirect:admin/user";
+        registrationService.registration(user);
+        return "redirect:/user";
     }
 
-    @GetMapping("admin/showFormForUpdateUser/{id}")
+    @GetMapping("showFormForUpdateUser/{id}")
     public String showFormForUpdate(@PathVariable("id") Integer id, Model model) {
         User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
         model.addAttribute("user", user);
         return "admin/userForm";
     }
-    @GetMapping("admin/deleteUser/{id}")
+    @GetMapping("deleteUser/{id}")
     public String deleteUser(@PathVariable("id") Integer id) {
         userRepository.deleteById(id);
-        return "redirect:admin/user";
+        return "redirect:/user";
     }
 
     @GetMapping("user/userInfo/{id}")
@@ -93,8 +79,7 @@ public class UserController {
 
     @GetMapping("addProductToOrder/{id}")
     public String addProductToOrder(@PathVariable("id") Integer id) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String name = auth.getName();
+        String name = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByUsername(name);
         return userService.buyProduct(user, id);
     }

@@ -2,7 +2,6 @@ package com.ardecs.ctshop.persistence.entity;
 
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -34,7 +33,7 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.active = 1;
+        this.active = 0;
     }
 
     public User() {}
