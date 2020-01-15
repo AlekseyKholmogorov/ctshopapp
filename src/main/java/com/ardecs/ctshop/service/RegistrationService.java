@@ -20,23 +20,14 @@ public class RegistrationService {
     public void registration(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setActive(1);
-        if (user.getUsername().toLowerCase().equals("admin")) {
-            user.getRoles().add(Role.ADMIN);
-            user.getRoles().remove(Role.USER);
-        } else {
-            user.getRoles().add(Role.USER);
-        }
+        user.getRoles().add(Role.USER);
         userRepository.save(user);
     }
 
-    public boolean isRegistrationValid(User user) {
+    public boolean isUserExists(User user) {
 
-        User userFromDbByUsername = userRepository.findByUsername(user.getUsername());
-        User userFromDbByEmail = userRepository.findByEmail(user.getEmail());
+        User userFromDB = userRepository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
+        return userFromDB != null;
 
-        if (userFromDbByUsername != null || userFromDbByEmail != null) {
-            return true;
-        }
-        return false;
     }
 }

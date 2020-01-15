@@ -30,7 +30,7 @@ public class RegistrationController {
     public String addUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
 
 
-        if (bindingResult.hasErrors() | registrationService.isRegistrationValid(user)) {
+        if (bindingResult.hasErrors() || registrationService.isUserExists(user)) {
             return "registration";
         }
         registrationService.registration(user);

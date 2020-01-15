@@ -45,12 +45,14 @@ public class UserController {
     @PostMapping("saveUser")
     public String saveUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
 
+        //Нельзя убирать или менять эту проверку, иначу будет не возможно обновить существующего пользователя.
+        // Эта проверка специально стоит перед проверкой существования пользователя.
         if (user.getId() != null && !bindingResult.hasErrors()) {
             registrationService.registration(user);
             return "redirect:/user";
         }
 
-        if (bindingResult.hasErrors() | registrationService.isRegistrationValid(user)) {
+        if (bindingResult.hasErrors() || registrationService.isUserExists(user)) {
             return "admin/userForm";
         }
 
