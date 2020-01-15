@@ -5,7 +5,6 @@ import com.ardecs.ctshop.persistence.entity.User;
 import com.ardecs.ctshop.persistence.repository.UserRepository;
 import com.ardecs.ctshop.service.RegistrationService;
 import com.ardecs.ctshop.service.UserService;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @Controller
 public class UserController {
@@ -78,9 +78,13 @@ public class UserController {
     }
 
     @GetMapping("addProductToOrder/{id}")
-    public String addProductToOrder(@PathVariable("id") Integer id) {
-        String name = SecurityContextHolder.getContext().getAuthentication().getName();
-        User user = userRepository.findByUsername(name);
+    public String addProductToOrder(@PathVariable("id") Integer id, Principal principal) {
+
+        if (principal == null) {
+            return "redirect:/index";
+        }
+
+        User user = userRepository.findByUsername(principal.getName());
         return userService.buyProduct(user, id);
     }
 
