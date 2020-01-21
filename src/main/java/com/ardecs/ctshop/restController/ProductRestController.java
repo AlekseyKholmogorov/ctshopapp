@@ -19,7 +19,7 @@ public class ProductRestController {
     }
 
     @GetMapping
-    @JsonView(Views.NamePrice.class)
+    @JsonView(Views.OverviewInformation.class)
     public List<Product> getProducts() {
         return productRepository.findAll();
     }

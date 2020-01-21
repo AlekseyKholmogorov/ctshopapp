@@ -1,6 +1,8 @@
 package com.ardecs.ctshop.persistence.entity;
 
+import com.ardecs.ctshop.persistence.Views;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonView;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
@@ -13,8 +15,10 @@ public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
+    @JsonView(Views.OverviewInformation.class)
     private Integer id;
     @Size(min=2, max=50)
+    @JsonView(Views.OverviewInformation.class)
     private String name;
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     @JsonIgnore
