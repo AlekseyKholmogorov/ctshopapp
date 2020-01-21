@@ -79,16 +79,4 @@ public class UserController {
         return "user/userInfo";
     }
 
-    @GetMapping("addProductToOrder/{id}")
-    public String addProductToOrder(@PathVariable("id") Integer id, Principal principal) {
-
-        if (principal == null) {
-            return "redirect:/index";
-        }
-
-        User user = userRepository.findByUsername(principal.getName());
-        return userService.buyProduct(user, id);
-    }
-
-
 }
