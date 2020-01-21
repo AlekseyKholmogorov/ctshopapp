@@ -23,13 +23,9 @@ public class OrderService {
         this.orderRepository = orderRepository;
     }
 
-    public Map<Product, Integer> getProducts(Order order) {
+    public Map<Product, Integer> getProductsInOrder(Order order) {
         Map<Product, Integer> products = new HashMap<>();
-
-        for (OrderProduct orderProduct : order.getOrderProducts()) {
-            products.put(orderProduct.getProduct(), orderProduct.getQuantityInOrder());
-        }
-
+        order.getOrderProducts().forEach(p -> products.put(p.getProduct(), p.getQuantityInOrder()));
         return products;
     }
 

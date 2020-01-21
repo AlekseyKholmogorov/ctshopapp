@@ -29,7 +29,7 @@ public class OrderController {
         Order order = orderRepository.findById(id).orElseThrow(NotFoundException::new);
         model.addAttribute("totalSum", orderService.getTotalSum(order));
         model.addAttribute("order", order);
-        model.addAttribute("products", orderService.getProducts(order));
+        model.addAttribute("products", orderService.getProductsInOrder(order));
         return "user/order";
     }
 
