@@ -1,6 +1,7 @@
 package com.ardecs.ctshop.controller;
 
 import com.ardecs.ctshop.exceptions.NotFoundException;
+import com.ardecs.ctshop.exceptions.PaidOrderCannotBeDeletedException;
 import com.ardecs.ctshop.persistence.entity.Order;
 import com.ardecs.ctshop.persistence.repository.OrderRepository;
 import com.ardecs.ctshop.service.OrderService;
@@ -35,6 +36,9 @@ public class OrderController {
     @GetMapping("deleteOrder/{id}")
     public String deleteProduct(@PathVariable("id") Integer id) {
         Order order = orderRepository.findById(id).orElseThrow(NotFoundException::new);
+        if (order.getIsPaid()) {
+            throw new PaidOrderCannotBeDeletedException("Paid order cannot be deleted");
+        }
         orderService.deleteOrder(order);
         return "redirect:/index";
     }

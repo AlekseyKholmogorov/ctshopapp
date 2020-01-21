@@ -47,17 +47,13 @@ public class OrderService {
 
     public void deleteOrder(Order order) {
 
-        if (!order.getIsPaid()) {
-            for (OrderProduct orderProduct : order.getOrderProducts()) {
-                Product product = productRepository.findById(orderProduct.getProduct().getId())
-                                                   .orElseThrow(NotFoundException::new);
-                product.setQuantity(product.getQuantity() + orderProduct.getQuantityInOrder());
-                productRepository.save(product);
-            }
+        for (OrderProduct orderProduct : order.getOrderProducts()) {
+            Product product = productRepository.findById(orderProduct.getProduct().getId())
+                    .orElseThrow(NotFoundException::new);
+            product.setQuantity(product.getQuantity() + orderProduct.getQuantityInOrder());
+            productRepository.save(product);
         }
-
         orderRepository.delete(order);
     }
-
 
 }
