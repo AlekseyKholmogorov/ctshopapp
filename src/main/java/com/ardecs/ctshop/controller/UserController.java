@@ -4,7 +4,6 @@ import com.ardecs.ctshop.exceptions.NotFoundException;
 import com.ardecs.ctshop.persistence.entity.User;
 import com.ardecs.ctshop.persistence.repository.UserRepository;
 import com.ardecs.ctshop.service.RegistrationService;
-import com.ardecs.ctshop.service.UserService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -14,19 +13,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.validation.Valid;
-import java.security.Principal;
 
 @Controller
 public class UserController {
 
     private final UserRepository userRepository;
-    private final UserService userService;
     private final RegistrationService registrationService;
 
 
-    public UserController(UserRepository userRepository, UserService userService, RegistrationService registrationService) {
+    public UserController(UserRepository userRepository, RegistrationService registrationService) {
         this.userRepository = userRepository;
-        this.userService = userService;
         this.registrationService = registrationService;
     }
 
@@ -46,7 +42,7 @@ public class UserController {
     public String saveUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
 
         //Нельзя убирать или менять эту проверку, иначу будет не возможно обновить существующего пользователя.
-        // Эта проверка специально стоит перед проверкой существования пользователя.
+        //Эта проверка специально стоит перед проверкой существования пользователя.
         if (user.getId() != null && !bindingResult.hasErrors()) {
             registrationService.registration(user);
             return "redirect:/user";

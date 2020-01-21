@@ -36,7 +36,7 @@ public class Product implements Serializable {
     @JsonView(Views.OverviewInformation.class)
     private Category category;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "product", cascade = CascadeType.MERGE)
     @JsonIgnore
     private Set<OrderProduct> orderProducts = new HashSet<>(0);
 

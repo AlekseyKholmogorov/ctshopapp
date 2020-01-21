@@ -6,8 +6,6 @@ import com.ardecs.ctshop.persistence.entity.User;
 import com.ardecs.ctshop.persistence.repository.OrderRepository;
 import com.ardecs.ctshop.persistence.repository.UserRepository;
 import com.ardecs.ctshop.service.OrderService;
-import com.ardecs.ctshop.service.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,17 +17,12 @@ import java.security.Principal;
 @Controller
 public class OrderController {
 
-    //Временно, пока не выполню #23
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private UserRepository userRepository;
-
+    private final UserRepository userRepository;
     private final OrderService orderService;
     private final OrderRepository orderRepository;
 
-    public OrderController(OrderService orderService, OrderRepository orderRepository) {
-
+    public OrderController(UserRepository userRepository, OrderService orderService, OrderRepository orderRepository) {
+        this.userRepository = userRepository;
         this.orderService = orderService;
         this.orderRepository = orderRepository;
 
@@ -52,7 +45,7 @@ public class OrderController {
     }
 
     @PostMapping("user/userInfo/order/{id}/buy")
-    public String buy(@PathVariable("id") Integer id) {
+    public String confirmOrder(@PathVariable("id") Integer id) {
         Order order = orderRepository.findById(id).orElseThrow(NotFoundException::new);
         order.setIsPaid(true);
         orderRepository.save(order);
@@ -67,7 +60,7 @@ public class OrderController {
         }
 
         User user = userRepository.findByUsername(principal.getName());
-        return userService.buyProduct(user, id);
+        return orderService.addProductToOrder(user, id);
     }
 }
 
