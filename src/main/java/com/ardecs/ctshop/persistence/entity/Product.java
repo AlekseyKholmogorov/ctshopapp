@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.*;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -28,7 +29,7 @@ public class Product implements Serializable {
     @Size(min=2)
     private String description;
     @JsonView(Views.OverviewInformation.class)
-    private Double price = 0.0;
+    private BigDecimal price = BigDecimal.ZERO;
     private Integer quantity = 0;
     @ManyToOne
     @JoinColumn(name = "category_id")
@@ -43,7 +44,7 @@ public class Product implements Serializable {
 
     }
 
-    public Product(String name, String region, String description, Double price, Integer quantity, Category category) {
+    public Product(String name, String region, String description, BigDecimal price, Integer quantity, Category category) {
         this.name = name;
         this.region = region;
         this.description = description;
@@ -92,11 +93,11 @@ public class Product implements Serializable {
         this.description = description;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

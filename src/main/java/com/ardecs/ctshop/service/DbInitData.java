@@ -11,6 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 
@@ -42,10 +43,10 @@ public class DbInitData implements CommandLineRunner {
         List<Category> categoryList = Arrays.asList(cat1, cat2, cat3);
         this.categoryRepository.saveAll(categoryList);
 
-        Product product1 = new Product("assam", "india", "black tea from india", 21.95, 3, cat2);
-        Product product2 = new Product("lapsang souchong", "china", "black tea from china", 9.98, 2, cat2);
-        Product product3 = new Product("bucaramanga", "colombia", "coffee from colombia", 26.40, 5, cat1);
-        Product product4 = new Product("amecafe", "brazil", "coffee from brazil", 18.75, 4, cat1);
+        Product product1 = new Product("assam", "india", "black tea from india", BigDecimal.valueOf(21.95), 3, cat2);
+        Product product2 = new Product("lapsang souchong", "china", "black tea from china", BigDecimal.valueOf(9.98), 2, cat2);
+        Product product3 = new Product("bucaramanga", "colombia", "coffee from colombia", BigDecimal.valueOf(26.40), 5, cat1);
+        Product product4 = new Product("amecafe", "brazil", "coffee from brazil", BigDecimal.valueOf(18.75), 4, cat1);
         List<Product> productList = Arrays.asList(product1, product2, product3, product4);
         this.productRepository.saveAll(productList);
 
