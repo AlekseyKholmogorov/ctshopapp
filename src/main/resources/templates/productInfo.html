@@ -25,13 +25,13 @@
     </thead>
     <tbody>
     <tr>
-        <td th:utext="${product.get().id}"></td>
-        <td th:utext="${product.get().name}"></td>
-        <td th:utext="${product.get().region}"></td>
-        <td th:utext="${product.get().description}"></td>
-        <td th:utext="${product.get().price}"></td>
-        <td th:utext="${product.get().quantity}"></td>
-        <td th:utext="${product.get().getCategory().name}"></td>
+        <td th:utext="${product.id}"></td>
+        <td th:utext="${product.name}"></td>
+        <td th:utext="${product.region}"></td>
+        <td th:utext="${product.description}"></td>
+        <td th:utext="${product.price}"></td>
+        <td th:utext="${product.quantity}"></td>
+        <td th:utext="${product.getCategory().name}"></td>
     </tr>
     </tbody>
 </table>
