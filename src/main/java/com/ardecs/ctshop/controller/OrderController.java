@@ -37,8 +37,25 @@ public class OrderController {
         return "user/order";
     }
 
+
+    @GetMapping("user/userInfo/order/shoppingCart")
+    public String showShoppingCart(Principal principal, Model model) {
+        User user = userRepository.findByUsername(principal.getName());
+        Order notPaidOrder = user.getOrders().stream().filter(o -> !o.getIsPaid()).findAny().orElse(null);
+
+        if (notPaidOrder == null) {
+            return "redirect:/index";
+        }
+
+        model.addAttribute("totalSum", orderService.getTotalSum(notPaidOrder));
+        model.addAttribute("order", notPaidOrder);
+        model.addAttribute("products", orderService.getProductsInOrder(notPaidOrder));
+
+        return "user/order";
+    }
+
     @GetMapping("deleteOrder/{id}")
-    public String deleteProduct(@PathVariable("id") Integer id) {
+    public String deleteOrder(@PathVariable("id") Integer id) {
         Order order = orderRepository.findById(id).orElseThrow(NotFoundException::new);
         orderService.deleteOrder(order);
         return "redirect:/index";

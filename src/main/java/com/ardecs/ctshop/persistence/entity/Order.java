@@ -19,7 +19,7 @@ public class Order implements Serializable {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.MERGE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "order", cascade = CascadeType.REMOVE)
     private Set<OrderProduct> orderProducts = new HashSet<>(0);
 
     public Order() {

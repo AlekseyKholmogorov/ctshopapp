@@ -31,7 +31,12 @@
                     </li>
                     <li sec:authorize="hasRole('ROLE_USER')" class="nav-item">
 
-                        <a class="nav-link" href="#" th:href="@{~/user/userInfo/{id}(id=${user.id})}" ><span style="color: blue" >Shopping Cart</span></a>
+                        <a class="nav-link" href="#" th:href="@{~/user/userInfo/order/shoppingCart}" ><span style="color: blue" >Shopping Cart</span></a>
+
+                    </li>
+                    <li sec:authorize="hasRole('ROLE_USER')" class="nav-item">
+
+                        <a class="nav-link" href="#" th:href="@{~/user/userInfo/{id}(id=${user.id})}" ><span style="color: blue" >User Info</span></a>
 
                     </li>
 
