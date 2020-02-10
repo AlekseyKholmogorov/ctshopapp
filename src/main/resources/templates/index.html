@@ -78,7 +78,7 @@
                 <td th:utext="${product.getPrice()}"></td>
                 <td th:utext="${product.getQuantity()}"></td>
                 <td sec:authorize="hasRole('ROLE_USER')">
-                    <a th:href="@{/addProductToOrder/{id}(id=${product.id})}">Add to Cart</a>
+                    <a th:href="@{user/addProductToOrder/{id}(id=${product.id})}">Add to Cart</a>
                     /
                     <a th:href="@{/showInfoAboutProduct/{id}(id=${product.id})}"> Info</a>
                 </td>

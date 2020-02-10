@@ -26,13 +26,13 @@ public class ProductController {
         this.categoryRepository = categoryRepository;
     }
 
-    @GetMapping("/product")
+    @GetMapping("admin/product")
     public String listProducts(Model model) {
         model.addAttribute("products", productRepository.findAll());
         return "admin/product";
     }
 
-    @GetMapping("/showFormForAddProduct")
+    @GetMapping("admin/showFormForAddProduct")
     public String showFormForAdd(Model model) {
         model.addAttribute("product", new Product());
         model.addAttribute("category", new Category());
@@ -40,7 +40,7 @@ public class ProductController {
         return "admin/productForm";
     }
 
-    @PostMapping("/saveProduct")
+    @PostMapping("admin/saveProduct")
     public String saveProduct(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult, Model model) {
         //Вернул обратно, из проблемы пропадающих категорий после сработки валидатора при неправильном заполнении полей
         model.addAttribute("categories", categoryRepository.findAll());
@@ -49,10 +49,10 @@ public class ProductController {
             return "admin/productForm";
         }
         productRepository.save(product);
-        return "redirect:/product";
+        return "redirect:/admin/product";
     }
 
-    @GetMapping("showFormForUpdateProduct/{id}")
+    @GetMapping("admin/showFormForUpdateProduct/{id}")
     public String showFormForUpdate(@PathVariable("id") Integer id, Model model) {
 
         Product product = productRepository.findById(id).orElseThrow(NotFoundException::new);
@@ -61,10 +61,10 @@ public class ProductController {
         return "admin/productForm";
     }
 
-    @GetMapping("/deleteProduct/{id}")
+    @GetMapping("admin/product/deleteProduct/{id}")
     public String deleteProduct(@PathVariable("id") Integer id) {
         productRepository.deleteById(id);
-        return "redirect:/product";
+        return "redirect:/admin/product";
     }
 
     @GetMapping("/showInfoAboutProduct/{id}")

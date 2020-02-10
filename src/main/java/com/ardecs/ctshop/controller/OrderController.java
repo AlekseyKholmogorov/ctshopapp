@@ -11,10 +11,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.security.Principal;
 
 @Controller
+@RequestMapping("user")
 public class OrderController {
 
     private final UserRepository userRepository;
@@ -28,7 +30,7 @@ public class OrderController {
 
     }
 
-    @GetMapping("user/userInfo/order/{id}")
+    @GetMapping("/userInfo/order/{id}")
     public String showOrder(@PathVariable("id") Integer id, Model model) {
         Order order = orderRepository.findById(id).orElseThrow(NotFoundException::new);
         model.addAttribute("totalSum", orderService.getTotalSum(order));
@@ -38,7 +40,7 @@ public class OrderController {
     }
 
 
-    @GetMapping("user/userInfo/order/shoppingCart")
+    @GetMapping("/userInfo/order/shoppingCart")
     public String showShoppingCart(Principal principal, Model model) {
         User user = userRepository.findByUsername(principal.getName());
         Order notPaidOrder = user.getOrders().stream().filter(o -> !o.getIsPaid()).findAny().orElse(null);
@@ -54,14 +56,14 @@ public class OrderController {
         return "user/order";
     }
 
-    @GetMapping("deleteOrder/{id}")
+    @GetMapping("/userInfo/deleteOrder/{id}")
     public String deleteOrder(@PathVariable("id") Integer id) {
         Order order = orderRepository.findById(id).orElseThrow(NotFoundException::new);
         orderService.deleteOrder(order);
         return "redirect:/index";
     }
 
-    @PostMapping("user/userInfo/order/{id}/buy")
+    @PostMapping("/userInfo/order/{id}/buy")
     public String confirmOrder(@PathVariable("id") Integer id) {
         Order order = orderRepository.findById(id).orElseThrow(NotFoundException::new);
         order.setIsPaid(true);
@@ -72,12 +74,9 @@ public class OrderController {
     @GetMapping("addProductToOrder/{id}")
     public String addProductToOrder(@PathVariable("id") Integer id, Principal principal) {
 
-        if (principal == null) {
-            return "redirect:/index";
-        }
-
         User user = userRepository.findByUsername(principal.getName());
         return orderService.addProductToOrder(user, id);
+
     }
 }
 

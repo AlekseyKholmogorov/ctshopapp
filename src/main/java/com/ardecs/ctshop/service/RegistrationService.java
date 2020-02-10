@@ -26,8 +26,7 @@ public class RegistrationService {
 
     public boolean isUserExists(User user) {
 
-        User userFromDB = userRepository.findByUsernameOrEmail(user.getUsername(), user.getEmail());
-        return userFromDB != null;
+        return userRepository.existsByUsernameOrEmail(user.getUsername(), user.getEmail());
 
     }
 }

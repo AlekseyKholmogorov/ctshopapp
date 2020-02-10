@@ -31,9 +31,9 @@
         <td th:utext="${user.password}"></td>
         <td th:utext="${user.getRoles()}"></td>
         <td>
-            <a th:href="@{/showFormForUpdateUser/{id}(id=${user.id})}">Update</a>
+            <a th:href="@{showFormForUpdateUser/{id}(id=${user.id})}">Update</a>
             /
-            <a th:href="@{/deleteUser/{id}(id=${user.id})}" onclick="if (!(confirm('Are you sure you want to delete this User?'))) return false">Delete</a>
+            <a th:href="@{user/deleteUser/{id}(id=${user.id})}" onclick="if (!(confirm('Are you sure you want to delete this User?'))) return false">Delete</a>
         </td>
 
 

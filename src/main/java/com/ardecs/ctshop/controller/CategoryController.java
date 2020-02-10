@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @Controller
+@RequestMapping("admin")
 public class CategoryController {
 
     private final CategoryRepository categoryRepository;
@@ -19,7 +20,7 @@ public class CategoryController {
         this.categoryRepository = categoryRepository;
     }
 
-    @GetMapping("category")
+    @GetMapping("/category")
     public String listCategories(Model model) {
         model.addAttribute("categories", categoryRepository.findAll());
         return "admin/category";
@@ -37,18 +38,18 @@ public class CategoryController {
             return "admin/categoryForm";
         }
         categoryRepository.save(category);
-        return "redirect:/category";
+        return "redirect:/admin/category";
     }
 
-    @GetMapping("showFormForUpdateCategory/{id}")
+    @GetMapping("/showFormForUpdateCategory/{id}")
     public String showFormForUpdate(@PathVariable("id") Integer id, Model model) {
         Category category = categoryRepository.findById(id).orElseThrow(NotFoundException::new);
         model.addAttribute("category", category);
         return "admin/categoryForm";
     }
-    @GetMapping("/deleteCategory/{id}")
+    @GetMapping("/category/deleteCategory/{id}")
     public String deleteCategory(@PathVariable("id") Integer id) {
         categoryRepository.deleteById(id);
-        return "redirect:/category";
+        return "redirect:/admin/category";
     }
 }

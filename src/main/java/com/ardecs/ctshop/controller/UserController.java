@@ -26,26 +26,26 @@ public class UserController {
         this.registrationService = registrationService;
     }
 
-    @GetMapping("user")
+    @GetMapping("admin/user")
     public String listUsers(Model model) {
         model.addAttribute("users", userRepository.findAll());
         return "admin/user";
     }
 
-    @GetMapping("showFormForAddUser")
+    @GetMapping("admin/showFormForAddUser")
     public String showFormForAdd(Model model) {
         model.addAttribute("user", new User());
         return "admin/userForm";
     }
 
-    @PostMapping("saveUser")
+    @PostMapping("admin/saveUser")
     public String saveUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult) {
 
         //Нельзя убирать или менять эту проверку, иначу будет не возможно обновить существующего пользователя.
         //Эта проверка специально стоит перед проверкой существования пользователя.
         if (user.getId() != null && !bindingResult.hasErrors()) {
             registrationService.registration(user);
-            return "redirect:/user";
+            return "redirect:/admin/user";
         }
 
         if (bindingResult.hasErrors() || registrationService.isUserExists(user)) {
@@ -53,19 +53,19 @@ public class UserController {
         }
 
         registrationService.registration(user);
-        return "redirect:/user";
+        return "redirect:/admin/user";
     }
 
-    @GetMapping("showFormForUpdateUser/{id}")
+    @GetMapping("admin/showFormForUpdateUser/{id}")
     public String showFormForUpdate(@PathVariable("id") Integer id, Model model) {
         User user = userRepository.findById(id).orElseThrow(NotFoundException::new);
         model.addAttribute("user", user);
         return "admin/userForm";
     }
-    @GetMapping("deleteUser/{id}")
+    @GetMapping("admin/user/deleteUser/{id}")
     public String deleteUser(@PathVariable("id") Integer id) {
         userRepository.deleteById(id);
-        return "redirect:/user";
+        return "redirect:/admin/user";
     }
 
     @GetMapping("user/userInfo/{id}")

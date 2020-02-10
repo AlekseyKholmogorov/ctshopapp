@@ -10,10 +10,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 public class OrderService {
@@ -29,15 +27,15 @@ public class OrderService {
     }
 
     public Map<Product, Integer> getProductsInOrder(Order order) {
-        Map<Product, Integer> products = new HashMap<>();
-        order.getOrderProducts().forEach(p -> products.put(p.getProduct(), p.getQuantityInOrder()));
-        return products;
+        return order.getOrderProducts().stream()
+                .collect(Collectors.toMap(OrderProduct::getProduct, OrderProduct::getQuantityInOrder));
     }
 
     public BigDecimal getTotalSum(Order order) {
-        List<BigDecimal> sums = new ArrayList<>();
-        order.getOrderProducts().forEach(p -> sums.add(p.getProduct().getPrice().multiply(BigDecimal.valueOf(p.getQuantityInOrder()))));
-        return sums.stream().reduce(BigDecimal.ZERO, BigDecimal::add);
+
+        return order.getOrderProducts().stream()
+                .map(p -> p.getProduct().getPrice().multiply(BigDecimal.valueOf(p.getQuantityInOrder())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public void deleteOrder(Order order) {
@@ -81,7 +79,7 @@ public class OrderService {
     }
 
 
-    private Order findNonPaidOrderOrCreateNew(User user) {
+    Order findNonPaidOrderOrCreateNew(User user) {
 
         Order order = orderRepository.findByIsPaid(false);
 
@@ -99,7 +97,7 @@ public class OrderService {
         return order;
     }
 
-    private void updateProductQuantityInStockAndOrder(Product product, OrderProduct orderProduct) {
+    void updateProductQuantityInStockAndOrder(Product product, OrderProduct orderProduct) {
 
         product.setQuantity(product.getQuantity() - 1);
         orderProduct.setQuantityInOrder(orderProduct.getQuantityInOrder() + 1);

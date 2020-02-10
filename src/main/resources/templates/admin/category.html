@@ -26,9 +26,9 @@
         <td th:utext="${category.id}"></td>
         <td th:utext="${category.name}"></td>
         <td>
-            <a th:href="@{/showFormForUpdateCategory/{id}(id=${category.id})}">Update</a>
+            <a th:href="@{showFormForUpdateCategory/{id}(id=${category.id})}">Update</a>
             /
-            <a th:href="@{/deleteCategory/{id}(id=${category.id})}" onclick="if (!(confirm('Are you sure you want to delete this category?'))) return false">Delete</a>
+            <a th:href="@{category/deleteCategory/{id}(id=${category.id})}" onclick="if (!(confirm('Are you sure you want to delete this category?'))) return false">Delete</a>
         </td>
 
 
